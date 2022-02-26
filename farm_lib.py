@@ -357,10 +357,12 @@ def init_farm(cfg, logger=logger):
     device, n_gpu = farm.utils.initialize_device_settings(use_cuda=use_cuda)
     if cfg.get("deterministic", False):
         farm.utils.set_all_seeds(seed=cfg.get("seed", 41), deterministic_cudnn=True)
-        torch.set_deterministic(True)
+        # torch.set_deterministic(True)
+        torch.use_deterministic_algorithms(True)
     else:
         farm.utils.set_all_seeds(seed=cfg.get("seed", 41), deterministic_cudnn=False)
-        torch.set_deterministic(False)
+        # torch.set_deterministic(False)
+        torch.use_deterministic_algorithms(False)
     device = str(device)  # this should give cuda or cpu
     if use_cuda:
         n_gpu = max(n_gpu, cfg.n_gpu)
@@ -925,6 +927,9 @@ def run_estimate(cfg, logger=logger):
     if clazz is None:
         raise Exception(f"FarmTasks class {ftname} unknown")
     ft = clazz(cfg)
+    data_dir = os.path.dirname(train_file)
+    if data_dir == "":
+        data_dir = "."
     processor = ft.get_processor(
         tokenizer=tokenizer,
         max_seq_len=max_seq_length,
@@ -932,7 +937,7 @@ def run_estimate(cfg, logger=logger):
         test_filename=None,
         dev_split=dev_split,
         dev_stratification=cfg.dev_stratification,
-        data_dir=os.path.dirname(train_file),
+        data_dir=data_dir,
     )
     cfg["_fts"] = ft
     logger.info("Create data silo")

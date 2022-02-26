@@ -13,7 +13,7 @@ from farm_processor import OurTextClassificationProcessor
 # from farm.data_handler.processor import TextClassificationProcessor as OurTextClassificationProcessor
 from farm.evaluation.metrics import simple_accuracy, register_metrics
 from sklearn.utils.class_weight import compute_class_weight
-from sklearn.metrics import matthews_corrcoef, f1_score, mean_squared_error, mean_absolute_error
+from sklearn.metrics import matthews_corrcoef, f1_score, mean_squared_error, mean_absolute_error, recall_score, precision_score
 from utils import init_logger
 from farm_head_coral import CoralOrdinalRegressionHead
 from farm_class_head import OurTextClassificationHead
@@ -117,6 +117,8 @@ class ClassificationMetrics:
         f1macro = f1_score(y_true=labels, y_pred=preds, average="macro")
         f1micro = f1_score(y_true=labels, y_pred=preds, average="micro")
         wf1macro = f1_score(y_true=labels, y_pred=preds, average="weighted")
+        rec_macro = recall_score(y_true=labels, y_pred=preds, average="macro")
+        prec_macro = precision_score(y_true=labels, y_pred=preds, average="macro")
         numericpreds = [int(x) for x in preds]
         numericlabels = [int(x) for x in labels]
         mcc = matthews_corrcoef(labels, preds)
@@ -125,6 +127,8 @@ class ClassificationMetrics:
             "f1_macro": f1macro,
             "f1_macro_weighted": wf1macro,
             "f1_micro": f1micro,
+            "rec_macro": rec_macro,
+            "prec_macro": prec_macro,
         }
         # to calculate macro mae, mse: calculate the metric for each group of pairs grouped by true label
         # to calculate weighted macro mae, mse: same as macro, but average is calculated by p(true label)
