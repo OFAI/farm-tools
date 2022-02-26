@@ -5,7 +5,7 @@ optimizers and schedulers.
 from abc import ABC, abstractmethod
 
 from farm.utils import MLFlowLogger
-from gatenlp.utils import init_logger
+from utils import init_logger
 from farm_utils import str2bool, add_cfg
 from farm.modeling.optimization import _get_optim as farm_get_opt
 from farm.modeling.optimization import get_scheduler as farm_get_sched

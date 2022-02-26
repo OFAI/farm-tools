@@ -17,7 +17,7 @@ import toml
 import farm_lib
 import random
 import socket
-from gatenlp.utils import init_logger
+from utils import init_logger
 from farm_lib import run_estimate
 
 logger = init_logger()

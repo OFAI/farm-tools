@@ -9,7 +9,7 @@ multitask models, hold-out evaluation and more.
 
 import farm_lib
 import mlflow
-from gatenlp.utils import init_logger
+from utils import init_logger
 
 logger = init_logger()
 

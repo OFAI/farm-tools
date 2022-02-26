@@ -37,7 +37,7 @@ from train_modified import Trainer, EarlyStopping
 from farm_eval import OurEvaluator
 # from farm.eval import Evaluator
 from farm.evaluation.metrics import registered_metrics
-from gatenlp.utils import init_logger
+from utils import init_logger
 from farm.visual.ascii.images import BUSH_SEP
 from farm_tasks import *
 from farm_optsched import *

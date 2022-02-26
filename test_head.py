@@ -5,7 +5,7 @@ Module to better test heads.
 import os
 import torch
 from torch.utils.data.sampler import SequentialSampler
-from gatenlp.utils import init_logger
+from utils import init_logger
 from farm_processor import OurTextClassificationProcessor
 from farm.modeling.adaptive_model import AdaptiveModel
 from farm.modeling.language_model import LanguageModel
@@ -75,10 +75,9 @@ def init_model(
 if __name__ == "__main__":
 
     from farm_head_coral import CoralOrdinalRegressionHead
-    from farm_head_ordinal1 import OrdinalRegressionHead1
     # head = TextClassificationHead(label_list=labels, num_labels=len(labels))
     # head = CoralOrdinalRegressionHead(label_list=labels)
-    head = OrdinalRegressionHead1(label_list=labels)
+    head = CoralOrdinalRegressionHead(label_list=labels)
 
     model, silo = init_model(head, label_list=labels, label_column="sexism_orig_max", train_file=train_file)
     processor = silo.processor

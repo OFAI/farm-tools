@@ -1,0 +1,12 @@
+conda create -n farm-tools python=3.8
+conda activate farm-tools
+pip install git+https://github.com/deepset-ai/FARM
+# may need to install a specific torch version instead of what farm pulls in
+# pip uninstall torch torchvision torchaudio
+# pip install torch==1.8.1+cu101  -f https://download.pytorch.org/whl/torch_stable.html
+pip install orderedattrdict
+pip install toml
+pip install plotly
+pip install notebook ipython ipykernel
+# also create notebook kernel
+python -m ipykernel install --user --name=farm-tools

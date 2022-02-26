@@ -6,7 +6,7 @@ output additional columns with label and probability
 
 import farm_lib
 import mlflow
-from gatenlp.utils import init_logger
+from utils import init_logger
 
 logger = init_logger()
 

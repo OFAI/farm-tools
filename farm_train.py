@@ -4,7 +4,7 @@ BERT classification/ordinal regression training
 """
 
 import farm_lib
-from gatenlp.utils import init_logger
+from utils import init_logger
 
 logger = init_logger()
 
