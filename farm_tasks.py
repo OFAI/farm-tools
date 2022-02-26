@@ -46,7 +46,7 @@ def calculate_class_weights(datasilo, task_name, source="train"):
     # TODO scale e.g. via logarithm to avoid crazy spikes for rare classes
     logger.info(f"Label list: {label_list}")
     logger.info(f"Observed labels: {observed_labels}")
-    class_weights = list(compute_class_weight("balanced", np.asarray(label_list), observed_labels))
+    class_weights = list(compute_class_weight("balanced", classes=np.asarray(label_list), y=observed_labels))
     return class_weights
 
 
@@ -233,7 +233,8 @@ class FTSingleClassification(FarmTasks):
     def get_processor(self, **kwargs):
         processor = OurTextClassificationProcessor(
             text_column_name=self.text_column_name,
-            instid_column_name="id",
+            # TODO: need to make this configurable from the command line!
+            # instid_column_name="id",
             **kwargs)
 
         processor.add_task(
