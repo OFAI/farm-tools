@@ -9,7 +9,7 @@ import dill
 
 from farm.utils import MLFlowLogger as MlLogger
 from farm.utils import GracefulKiller, set_all_seeds
-from farm_eval import OurEvaluator as Evaluator
+from farm_tools.farm_eval import OurEvaluator as Evaluator
 from farm.data_handler.data_silo import DataSilo
 from farm.visual.ascii.images import GROWING_TREE
 from farm.modeling.adaptive_model import AdaptiveModel

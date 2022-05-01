@@ -5,8 +5,8 @@ Module to better test heads.
 import os
 import torch
 from torch.utils.data.sampler import SequentialSampler
-from utils import init_logger
-from farm_processor import OurTextClassificationProcessor
+from farm_tools.utils import init_logger
+from farm_tools.farm_processor import OurTextClassificationProcessor
 from farm.modeling.adaptive_model import AdaptiveModel
 from farm.modeling.language_model import LanguageModel
 from farm.data_handler.dataloader import NamedDataLoader

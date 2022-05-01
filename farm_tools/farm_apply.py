@@ -3,10 +3,10 @@
 BERT classification/ordinal regression application: apply the model to text from one column in the tsv input file,
 output additional columns with label and probability
 """
-
-import farm_lib
+from farm_tools import farm_lib
+import farm_tools.farm_lib
 import mlflow
-from utils import init_logger
+from farm_tools.utils import init_logger
 
 logger = init_logger()
 

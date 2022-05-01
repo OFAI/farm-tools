@@ -3,8 +3,8 @@
 BERT classification/ordinal regression training
 """
 
-import farm_lib
-from utils import init_logger
+from farm_tools import farm_lib
+from farm_tools.utils import init_logger
 
 logger = init_logger()
 

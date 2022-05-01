@@ -5,10 +5,10 @@ import importlib
 from torch import nn
 from transformers import AutoModelForSequenceClassification
 from farm.modeling.prediction_head import PredictionHead
-from farm_coral.dataset import levels_from_labelbatch
-from farm_coral.losses import coral_loss
-from utils import init_logger
-from farm_utils import OurFeedForwardBlock
+from farm_tools.farm_coral.dataset import levels_from_labelbatch
+from farm_tools.farm_coral.losses import coral_loss
+from farm_tools.utils import init_logger
+from farm_tools.farm_utils import OurFeedForwardBlock
 
 logger = init_logger("FARM-CORAL-head")
 

@@ -7,7 +7,7 @@ from torch import nn
 from torch.nn import CrossEntropyLoss
 from farm.modeling.prediction_head import PredictionHead
 from transformers import AutoModelForSequenceClassification
-from farm_utils import OurFeedForwardBlock
+from farm_tools.farm_utils import OurFeedForwardBlock
 
 logger = logging.getLogger(__name__)
 

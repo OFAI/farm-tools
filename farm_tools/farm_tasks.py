@@ -9,15 +9,15 @@ import numpy as np
 import mlflow
 
 import torch.nn
-from farm_processor import OurTextClassificationProcessor
+from farm_tools.farm_processor import OurTextClassificationProcessor
 # from farm.data_handler.processor import TextClassificationProcessor as OurTextClassificationProcessor
 from farm.evaluation.metrics import simple_accuracy, register_metrics
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import matthews_corrcoef, f1_score, mean_squared_error, mean_absolute_error, recall_score, precision_score
-from utils import init_logger
-from farm_head_coral import CoralOrdinalRegressionHead
-from farm_class_head import OurTextClassificationHead
-from farm_utils import str2bool, add_cfg
+from farm_tools.utils import init_logger
+from farm_tools.farm_head_coral import CoralOrdinalRegressionHead
+from farm_tools.farm_class_head import OurTextClassificationHead
+from farm_tools.farm_utils import str2bool, add_cfg
 logger = init_logger()
 
 

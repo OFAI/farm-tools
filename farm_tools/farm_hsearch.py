@@ -14,11 +14,11 @@ import sys
 import socket
 from copy import deepcopy, copy
 import toml
-import farm_lib
+from farm_tools import farm_lib
 import random
 import socket
-from utils import init_logger
-from farm_lib import run_estimate
+from farm_tools.utils import init_logger
+from farm_tools.farm_lib import run_estimate
 
 logger = init_logger()
 

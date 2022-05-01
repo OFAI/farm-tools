@@ -33,15 +33,15 @@ from farm.data_handler.data_silo import DataSiloForCrossVal, DataSiloForHoldout
 from farm.modeling.adaptive_model import AdaptiveModel
 from farm.modeling.language_model import LanguageModel
 # from farm.train import Trainer, EarlyStopping
-from train_modified import Trainer, EarlyStopping
-from farm_eval import OurEvaluator
+from farm_tools.train_modified import Trainer, EarlyStopping
+from farm_tools.farm_eval import OurEvaluator
 # from farm.eval import Evaluator
 from farm.evaluation.metrics import registered_metrics
-from utils import init_logger
+from farm_tools.utils import init_logger
 from farm.visual.ascii.images import BUSH_SEP
-from farm_tasks import *
-from farm_optsched import *
-from farm_utils import str2bool
+from farm_tools.farm_tasks import *
+from farm_tools.farm_optsched import *
+from farm_tools.farm_utils import str2bool
 logger = init_logger()
 
 
@@ -1082,6 +1082,9 @@ def run_train(cfg, logger=logger):
     if clazz is None:
         raise Exception(f"FarmTasks class {ftname} unknown")
     ft = clazz(cfg)
+    data_dir=os.path.dirname(train_file)
+    if data_dir == "":
+        data_dir = "."
     processor = ft.get_processor(
         tokenizer=tokenizer,
         max_seq_len=max_seq_length,
@@ -1089,7 +1092,7 @@ def run_train(cfg, logger=logger):
         test_filename=None,
         dev_split=dev_split,
         dev_stratification=cfg.dev_stratification,
-        data_dir=os.path.dirname(train_file),
+        data_dir=data_dir,
     )
     if hasattr(ft, "label_list"):
         ml_logger.log_params({"label_list": ",".join(ft.label_list)})
