@@ -232,6 +232,12 @@ class FTSingleClassification(FarmTasks):
         self.task_name = cfg.get("task_name", "head0")
         self.label_column_name = cfg.get("label_column", "target")
         self.text_column_name = cfg.get("text_column", "text")
+        self.cfg = add_cfg(self.cfg, prefix="hd0")
+        cweights = cfg.get("hd0_cweights")
+        if cweights is None:
+            self.cweights = None
+        else:
+            self.cweights = np.array([float(x) for x in cweights.split(",")], dtype=np.float32)
         register_metrics('mymetrics', ClassificationMetrics(label_list=self.label_list))
 
     def get_processor(self, **kwargs):
@@ -253,14 +259,17 @@ class FTSingleClassification(FarmTasks):
 
     def get_heads(self, silo):
         if self.use_class_weights:
-            weights = np.array(
-                calculate_class_weights(silo, task_name=self.task_name), dtype=np.float32)
+            if self.cweights is None:
+                weights = np.array(
+                    calculate_class_weights(silo, task_name=self.task_name), dtype=np.float32)
+            else:
+                weights = self.cweights
             logger.info(f"Using class weights: {weights}")
         else:
             weights = None
             logger.info(f"Not using class weights!")
         mlflow.log_params({"class_weights": weights})
-        self.cfg = add_cfg(self.cfg, prefix="hd0")
+        # self.cfg = add_cfg(self.cfg, prefix="hd0")
         layers = self.cfg.get("hd0_layer_dims", [])
         hddim = int(self.cfg.get("hd_dim", 768))
         if layers:
