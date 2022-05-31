@@ -104,8 +104,7 @@ def add_config(cfg, toadd):
     return cfg
 
 
-if __name__ == "__main__":
-
+def main():
     cfg = farm_lib.getargs(*farm_lib.argparser_hsearch())
     configfile = cfg["hcfg"]
     hcfg = toml.load(configfile)
@@ -282,3 +281,7 @@ if __name__ == "__main__":
                 print("\t".join(ldata), file=outfp)
     elif halg == "beam":
         raise Exception("Alg beam not yet implemented")
+
+
+if __name__ == "__main__":
+    main()

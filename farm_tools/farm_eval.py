@@ -22,6 +22,7 @@ from farm.evaluation.metrics import (matthews_corrcoef, simple_accuracy, acc_and
   registered_metrics)
 logger = logging.getLogger(__name__)
 
+
 def compute_metrics(metric, preds, labels, instids=None, probs=None):
     """
     Calculate the named metric values for the list of predictions vs list of labels.

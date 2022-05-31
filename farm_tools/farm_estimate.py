@@ -13,8 +13,8 @@ from farm_tools.utils import init_logger
 
 logger = init_logger()
 
-if __name__ == "__main__":
 
+def main():
     cfg = getargs(*farm_lib.argparser_estimate())
     try:
         ret = run_estimate(cfg)
@@ -23,3 +23,7 @@ if __name__ == "__main__":
         mlflow.log_params({"ABORTED": str(ex)})
         mlflow.end_run()
         raise ex
+
+
+if __name__ == "__main__":
+    main()

@@ -31,6 +31,9 @@ setup(
     # test_suite="tests",
     entry_points={"console_scripts": [
         "farm-apply=farm_tools.farm_apply:main",
+        "farm-estimate=farm_tools.farm_estimate:main",
+        "farm-hsearch=farm_tools.farm_hsearch:main",
+        "farm-train=farm_tools.farm_train:main",
     ]},
     classifiers=[
         # "Development Status :: 6 - Mature",
