@@ -8,5 +8,6 @@ pip install orderedattrdict
 pip install toml
 pip install plotly
 pip install notebook ipython ipykernel
+pip install -e .
 # also create notebook kernel
 python -m ipykernel install --user --name=farm-tools
