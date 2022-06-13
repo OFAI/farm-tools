@@ -339,6 +339,8 @@ def argparser_apply(parser=None, cfg=None):
                         help="Path to output TSV file")
     parser.add_argument("--modeldir", type=str, required=True,
                         help="Path to directory where the model is stored")
+    parser.add_argument("--heads", type=int, nargs="*", 
+                        help="Head numbers to use, prepends hdN to output column names")
     # TODO: these should come from the task name maybe?
     parser.add_argument("--label_column", type=str,
                         help=f"Name of added label column ({DF.label_column})")
@@ -967,15 +969,22 @@ def run_apply(cfg, logger=logger):
         """In-place modify batch: add label and prob columns at end"""
         dicts = [{"text": row[name2idx[cfg.text_column]]} for row in batch]
         ret = inferencer.inference_from_dicts(dicts)
-        # TODO we assume getting the prediction from head 0 here
-        result = ret[0]
-        preds = result["predictions"]
-        labels = [pred["label"] for pred in preds]
-        probs = [pred["probability"] for pred in preds]
-        assert len(batch) == len(labels)
-        assert len(batch) == len(probs)
-        for incols, label, prob in zip(batch, labels, probs):
-            print("\t".join(incols), label, prob, sep="\t", file=outfp)
+        heads = cfg.get("heads", [0])
+        # for each head we add 2 output columns (label, prob) in order 
+        outcols = []
+        for hdnr in heads:
+            result = ret[hdnr][0]
+            preds = result["predictions"]
+            labels = [pred["label"] for pred in preds]
+            probs = [pred["probability"] for pred in preds]
+            assert len(batch) == len(labels)
+            assert len(batch) == len(probs)
+            outcols.append(labels)
+            outcols.append(probs)
+        for alldata in zip(batch, *outcols):
+            incols = alldata[0]
+            predcols = alldata[1:]
+            print("\t".join(incols), "\t".join([str(x) for x in predcols]), sep="\t", file=outfp)
 
     logger.info("LOADING MODEL")
     if cfg.max_seq is None:
@@ -1011,8 +1020,10 @@ def run_apply(cfg, logger=logger):
         with open(cfg.outfile, "wt", encoding="utf8") as outfp:
             # write hdr
             outcols = cols.copy()
-            outcols.append(cfg.label_column)
-            outcols.append(cfg.prob_column)
+            heads = cfg.get("heads", [0])
+            for hdnr in heads:
+                outcols.append(f"hd{hdnr}_"+cfg.label_column)
+                outcols.append(f"hd{hdnr}_"+cfg.prob_column)
             print("\t".join(outcols), file=outfp)
             batch = []  # batchsize rows to process
             for line in infp:
