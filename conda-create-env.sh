@@ -46,7 +46,7 @@ popd
 pip install orderedattrdict
 pip install toml
 pip install plotly
-pip install notebook ipython ipykernel
+pip install notebook ipython ipykernel jupyter ipywidgets
 pip install -e .
 
 python -m ipykernel install --user --name=farm-tools
