@@ -1,0 +1,23 @@
+torch
+# progress bars in model download and training scripts
+tqdm
+# Accessing files from S3 directly.
+boto3
+# Used for downloading models over HTTP
+requests
+# Scipy & sklearn for stats in run_classifier
+scipy>=1.3.2
+scikit-learn
+# Metrics or logging related
+seqeval
+# was: mlflow<=1.13.1
+mlflow
+# was 4.7.0
+transformers==4.21.0
+sentence-transformers
+# accessing dictionary elements with dot notation
+dotmap
+dill # pickle extension for (de-)serialization
+psutil
+sentencepiece
+

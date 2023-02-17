@@ -34,7 +34,9 @@ from farm.modeling.adaptive_model import AdaptiveModel
 from farm.modeling.language_model import LanguageModel
 # from farm.train import Trainer, EarlyStopping
 from farm_tools.train_modified import Trainer, EarlyStopping
+from farm_tools import train_modified
 from farm_tools.farm_eval import OurEvaluator
+from farm_tools import farm_eval
 # from farm.eval import Evaluator
 from farm.evaluation.metrics import registered_metrics
 from farm_tools.utils import init_logger
@@ -374,8 +376,6 @@ def init_farm(cfg, logger=logger):
     logger.info("Device={}, nGPU={}".format(device, n_gpu))
     mlflow.log_params({"device": str(device)})
     mlflow.log_params({"n_gpu": str(n_gpu)})
-    import train_modified
-    import farm_eval
     train_modified.looger = logger
     farm_eval.logger = logger
     # farm.train.logger = logger
