@@ -283,7 +283,7 @@ def argparser_train(parser=None, cfg=None):
     parser.add_argument("--lm_name", type=str,
                         help="Load LM from that known named model (will download and cache model!)")
     parser.add_argument("--evaluate_every", type=float,
-                        help=f"Evaluate every this many batches ({DF.evaluate_every})")
+                        help=f"Evaluate every this many batches, if < 0 this many epochs ({DF.evaluate_every})")
     parser.add_argument("--max_epochs", type=int,
                         help=f"Maximum number of epochs ({DF.max_epochs})")
     parser.add_argument("--dropout", type=float,
@@ -973,7 +973,10 @@ def run_apply(cfg, logger=logger):
         # for each head we add 2 output columns (label, prob) in order 
         outcols = []
         for hdnr in heads:
-            result = ret[hdnr][0]
+            result = ret[hdnr]
+            # TODO: what is the format we get here? do we sometimes get a list??
+            if isinstance(result, list):
+                result = ret[hdnr][0]
             preds = result["predictions"]
             labels = [pred["label"] for pred in preds]
             probs = [pred["probability"] for pred in preds]

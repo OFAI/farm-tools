@@ -4,3 +4,5 @@ plotly
 notebook
 ipython
 ipykernel
+jupyter
+ipywidgets
