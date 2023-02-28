@@ -43,10 +43,7 @@ pip install -e .
 
 popd
 
-pip install orderedattrdict
-pip install toml
-pip install plotly
-pip install notebook ipython ipykernel
+pip install -r farm-tool-requirements.txt
 pip install -e .
 
 python -m ipykernel install --user --name=farm-tools

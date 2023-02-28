@@ -1,8 +1,8 @@
 # farm-tools
+
 Programs, library functions, tools working on top of deepset-ai's FARM
 
 See https://github.com/deepset-ai/FARM
-
 
 My own code for using the FARM library, opinionated, some parts may be out of date.
 
@@ -14,13 +14,31 @@ License of this code is the same as for the FARM software.
 
 See [`conda.sourceme`](conda.sourceme)
 
-* create environment
-* install FARM
-* if necessary, uninstall pytorch installed as part of FARM and reinstall the version that you / that fits your configuration
-* install additional dependencies
-* (optional) from this directory, install farm-tools itself: `pip install -e .`
+NOTE: make sure to either run the `conda.sourceme` code or perform the following steps as close as possible 
+to get repeatable results!
+
+* create environment, tested with python 3.8
+* activate environment
+* Instead of directly installing FARM we need to slightly modify the installation process by changing the 
+  requirements file. This is done like this:
+  * from within the farm-tools root dir, clone the FARM repo: `git clone https://github.com/deepset-ai/FARM.git`
+  * copy our modified farm-requirements.txt into FARM/requirements.txt : `cp farm-requirements.txt FARM/requirements.txt`
+  * do a development install directly from the cloned repo:
+  * `cd FARM`
+  * `pip install -r requirements.txt`
+  * `pip install -e .`
+  * `cd ..`
+* if necessary because the wrong version of pytorch got installed for your system, 
+  uninstall pytorch installed as part of FARM and reinstall the version that you / that fits your configuration
+* Install the additional dependencies needed for farm-tools:
+  * `pip install -r farm-tool-requirements.txt`
+* Install the farm-tool package:
+  * `pip install -e .`
   * if this is done the commands can be executed as e.g. `farm-estimate` instead 
     of `$PATH_TO_FARMTOOLS/farm_tools/farm_estimate.py` 
+* Install the jupyter kernel:
+  `python -m ipykernel install --user --name=farm-tools`
+
 
 ## Usage
 

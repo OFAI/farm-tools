@@ -1,0 +1,6 @@
+orderedattrdict
+toml
+plotly
+notebook
+ipython
+ipykernel
