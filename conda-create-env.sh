@@ -36,6 +36,7 @@ echo Activated farm-tools running from `pwd`
 # instead we will clone farm, update the requirements with our own and then install locally
 
 # are we in the correct directory?
+# was farm-requirements.tmp
 if [ ! -f farm-requirements.txt ]
 then
    echo Please run this from farm-tools root directory
