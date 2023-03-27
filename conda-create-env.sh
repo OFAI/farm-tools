@@ -2,13 +2,17 @@
 
 set -e 
 set -o pipefail
+trap "echo Terminating script, something went wrong!!!" EXIT
 
-d=`which conda`
+echo Trying to create conda environment ...
+
+d=`which conda || /bin/true` 
 if [[ "x$d" == "x" ]]
 then
-    echo no conda
+    echo no conda !!!
     exit 1
 fi
+echo conda found at $d
 
 d=`dirname $d`
 c=$d/../etc/profile.d/conda.sh
@@ -47,5 +51,7 @@ pip install -r farm-tool-requirements.txt
 pip install -e .
 
 python -m ipykernel install --user --name=farm-tools
+
+trap - EXIT
 
 echo conda environment farm-tooks and ipykernel farm-tools created successfully
