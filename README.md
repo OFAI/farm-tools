@@ -12,9 +12,9 @@ License of this code is the same as for the FARM software.
 
 ## Installation/Setup
 
-See [`conda.sourceme`](conda.sourceme)
+See [`conda-create-env-sh`](conda-create-env.sh)
 
-NOTE: make sure to either run the `conda.sourceme` code or perform the following steps as close as possible 
+NOTE: make sure to either run the `conda-create-env.sh` code or perform the following steps as close as possible 
 to get repeatable results!
 
 * create environment, tested with python 3.8
