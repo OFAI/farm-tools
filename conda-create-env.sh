@@ -27,13 +27,16 @@ fi
 . $c
 
 conda create -y -n farm-tools python=3.8
+conda init bash
 conda activate farm-tools
+
+echo Activated farm-tools running from `pwd`
 
 # we cannot pip install FARM any longer since its requirements are broken
 # instead we will clone farm, update the requirements with our own and then install locally
 
 # are we in the correct directory?
-if [ ! -f farm-requirements.tmp ]
+if [ ! -f farm-requirements.txt ]
 then
    echo Please run this from farm-tools root directory
    exit 1
