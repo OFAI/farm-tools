@@ -9,6 +9,7 @@ import datetime
 
 from sklearn.metrics import confusion_matrix
 import torch
+# from torch.optim import AdamW
 import statistics
 import numbers
 import logging
@@ -32,6 +33,7 @@ import farm.modeling.optimization
 from farm.data_handler.data_silo import DataSiloForCrossVal, DataSiloForHoldout
 from farm.modeling.adaptive_model import AdaptiveModel
 from farm.modeling.language_model import LanguageModel
+from farm.modeling.optimization import initialize_optimizer
 # from farm.train import Trainer, EarlyStopping
 from farm_tools.train_modified import Trainer, EarlyStopping
 from farm_tools import train_modified
@@ -85,8 +87,8 @@ DEFAULT_CONFIG_TRAIN = AttrDict(dict(
     dropout=0.2,
     lrate=0.5e-5,
     es_patience=10,
-    es_metric="f1_micro",
-    es_mode="max",
+    es_metric="loss",
+    es_mode="min",
     es_min_evals=1,
     es_hd=0,
     losses_alpha=0.5,
@@ -309,7 +311,7 @@ def argparser_train(parser=None, cfg=None):
     parser.add_argument("--fts_cfg", nargs='*', default=[],
                         help=f"FarmTasks configuration settings of the form parm=value")
     parser.add_argument("--fos", type=str,
-                        help=f"FarmOptSched class to use ({DF.fos})")
+                        help=f"FarmOptSched class to use ({DF.fos}) or 'farm-default' for FARM default")
     parser.add_argument("--fos_cfg", nargs='*', default=[],
                         help=f"Farm optimizer/scheduler configuration settings of the form parm=value")
     parser.add_argument("--hd_dim", type=int, default=DF.hd_dim,
@@ -463,23 +465,37 @@ def train_model(silo, save_dir, lang_model_dir, cfg=None):
     # use our own optimizer initializer instead:
     logger.info("Create optimizer/scheduler")
     fosname = cfg["fos"]
-    clazz = globals().get(fosname)
-    if clazz is None:
-        raise Exception(f"FarmOptSched class {fosname} unknown")
-    fos = clazz(
-        model=model,
-        n_batches=len(silo.loaders["train"]),
-        n_epochs=cfg.max_epochs,
-        device=cfg.device,
-        learning_rate=cfg.lrate,
-        grad_acc_steps=cfg.grad_acc,
-        cfg=cfg
-    )
-    logger.info(f"Using Farm OptSched Instance: {fos} of type {type(fos)}")
-    model, optimizer, lr_schedule = fos.get_optsched()
+    if fosname == "farm-default":
+        model, optimizer, lr_schedule = initialize_optimizer(
+            model=model,
+            learning_rate=cfg.lrate,
+            device=cfg.device,
+            n_batches=len(silo.loaders["train"]),
+            optimizer_opts=None,  # should default to AdamW
+            schedule_opts=None,
+            n_epochs=cfg.max_epochs,
+            use_amp=cfg.use_amp,
+            grad_acc_steps=cfg.grad_acc,
+        )
+        logger.info(f"Using FARM default scheduler: {lr_schedule}")
+    else:
+        clazz = globals().get(fosname)
+        if clazz is None:
+            raise Exception(f"FarmOptSched class {fosname} unknown")
+        fos = clazz(
+            model=model,
+            n_batches=len(silo.loaders["train"]),
+            n_epochs=cfg.max_epochs,
+            device=cfg.device,
+            learning_rate=cfg.lrate,
+            grad_acc_steps=cfg.grad_acc,
+            cfg=cfg
+        )
+        logger.info(f"Using Farm OptSched Instance: {fos} of type {type(fos)}")
+        model, optimizer, lr_schedule = fos.get_optsched()
+        logger.info(f"Created scheduler: {lr_schedule}")
     if cfg.d:
         logger.info(f"Created optimizer: {optimizer}")
-    logger.info(f"Created scheduler: {lr_schedule}")
     earlystopping = EarlyStopping(
         head=cfg.es_hd,
         metric=cfg.es_metric,
@@ -1118,6 +1134,7 @@ def run_train(cfg, logger=logger):
 
     logger.info("Create data silo")
     silo = farm.data_handler.data_silo.DataSilo(
+        max_processes=1,
         processor=processor,
         batch_size=cfg.batch_size)
 
