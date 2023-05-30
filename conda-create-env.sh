@@ -1,10 +1,16 @@
 #!/bin/bash
 
+envname=$1
+if [[ "x$envname" == "x" ]]
+then
+  envname=farm-tools
+fi
+echo Trying to create environment $envname
+
 set -e 
 set -o pipefail
 trap "echo Terminating script, something went wrong!!!" EXIT
 
-echo Trying to create conda environment ...
 
 d=`which conda || /bin/true` 
 if [[ "x$d" == "x" ]]
