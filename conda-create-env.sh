@@ -51,6 +51,7 @@ fi
 
 git clone https://github.com/deepset-ai/FARM.git
 cp farm-requirements.txt FARM/requirements.txt
+cp farm-version.py FARM/farm/_version.py
 pushd FARM
 pip install -r requirements.txt
 pip install -e .
