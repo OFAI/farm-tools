@@ -32,11 +32,11 @@ fi
 
 . $c
 
-conda create -y -n farm-tools python=3.8
+conda create -y -n $envname python=3.8
 conda init bash
-conda activate farm-tools
+conda activate $envname
 
-echo Activated farm-tools running from `pwd`
+echo Activated $envname running from `pwd`
 
 # we cannot pip install FARM any longer since its requirements are broken
 # instead we will clone farm, update the requirements with our own and then install locally
@@ -60,8 +60,8 @@ popd
 pip install -r farm-tool-requirements.txt
 pip install -e .
 
-python -m ipykernel install --user --name=farm-tools
+python -m ipykernel install --user --name=$envname
 
 trap - EXIT
 
-echo conda environment farm-tooks and ipykernel farm-tools created successfully
+echo conda environment $envname and ipykernel $envname created successfully
